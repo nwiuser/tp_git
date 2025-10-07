@@ -1,50 +1,35 @@
-class Compte:
-    """
-    Classe représentant un compte bancaire.
-    """
+from transaction import Transaction
 
-    def __init__(self, numero, proprietaire, solde_initial=0.0):
-        """
-        Constructeur de la classe Compte.
-        :param numero: Numéro du compte (str ou int)
-        :param proprietaire: Nom du propriétaire (str)
-        :param solde_initial: Solde de départ (float)
-        """
+class Compte:
+    def __init__(self, numero, proprietaire, solde=0):
         self.numero = numero
         self.proprietaire = proprietaire
-        self.solde = solde_initial
+        self.solde = solde
+        self.transactions = []  # Liste des transactions
 
-    #Méthode pour déposer de l'argent
     def deposer(self, montant):
-        """
-        Dépose un montant sur le compte.
-        """
-        if montant > 0:
-            self.solde += montant
-            print(f"✅ Dépôt de {montant} DH effectué avec succès.")
-        else:
-            print("❌ Le montant doit être positif.")
+        self.solde += montant
+        transaction = Transaction(len(self.transactions) + 1, montant, "dépôt", self)
+        self.transactions.append(transaction)
+        print(f"Dépôt de {montant} € effectué sur le compte {self.numero}")
 
-    #Méthode pour retirer de l'argent
     def retirer(self, montant):
-        """
-        Retire un montant du compte si le solde est suffisant.
-        """
-        if montant <= 0:
-            print("❌ Le montant doit être positif.")
-        elif montant > self.solde:
-            print("❌ Solde insuffisant.")
-        else:
+        if montant <= self.solde:
             self.solde -= montant
-            print(f"✅ Retrait de {montant} DH effectué avec succès.")
+            transaction = Transaction(len(self.transactions) + 1, montant, "retrait", self)
+            self.transactions.append(transaction)
+            print(f"Retrait de {montant} € effectué sur le compte {self.numero}")
+        else:
+            print("Solde insuffisant !")
 
-    #Méthode pour consulter le solde
     def afficher_solde(self):
-        """
-        Affiche le solde actuel du compte.
-        """
-        print(f"💰 Solde du compte {self.numero} : {self.solde} DH")
+        print(f"Solde du compte {self.numero}: {self.solde} €")
 
-    #Représentation sous forme de texte
-    def __str__(self):
-        return f"Compte n°{self.numero} - Propriétaire : {self.proprietaire} - Solde : {self.solde} DH"
+    # Étape 3 : afficher l’historique des transactions
+    def afficher_historique(self):
+        print(f"\nHistorique des transactions du compte {self.numero}:")
+        if not self.transactions:
+            print("Aucune transaction.")
+        else:
+            for t in self.transactions:
+                print(t)

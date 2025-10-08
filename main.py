@@ -13,6 +13,7 @@ class Main:
             print("4. Consulter le solde")
             print("5. Afficher l’historique des transactions")
             print("6. Quitter")
+            print("ajouter pour avoir des conflits")
 
             choix = input("Votre choix : ")
 

@@ -15,6 +15,7 @@ class Main:
 
             print("6. Effectuer un virement")
             print("7. Quitter")
+            print("8-Hbt lt7t")
             
 
             choix = input("Votre choix : ")
@@ -50,7 +51,9 @@ class Main:
             elif choix == "7":
                 print("Merci d’avoir utilisé MaBanque. À bientôt !")
                 break
-
+            
+            elif choix =="8":
+                print("safi rak hbti chokrane ")
             else:
                 print("Choix invalide, veuillez réessayer.")
 

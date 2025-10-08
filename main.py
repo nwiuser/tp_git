@@ -14,8 +14,9 @@ class Main:
             print("5. Afficher l’historique des transactions")
 
             print("6. Effectuer un virement")
-            print("7. Quitter")
-            print("8-Hbt lt7t")
+            print("7. Calculer et capitaliser les intérêts")
+            print("8. Quitter")
+
             
 
             choix = input("Votre choix : ")
@@ -47,13 +48,20 @@ class Main:
                 cible = input("Numéro du compte cible : ")
                 montant = float(input("Montant à virer : "))
                 banque.virement(source, cible, montant)
-            
+
             elif choix == "7":
+                numero = input("Numéro du compte : ")
+                jours = int(input("Nombre de jours : "))
+                compte = banque.get_compte(numero)
+                if compte:
+                    compte.capitaliser_interets(jours)
+                else:
+                    print("Compte introuvable.")                
+            
+            elif choix == "8":
                 print("Merci d’avoir utilisé MaBanque. À bientôt !")
                 break
             
-            elif choix =="8":
-                print("safi rak hbti chokrane ")
             else:
                 print("Choix invalide, veuillez réessayer.")
 

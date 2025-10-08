@@ -42,3 +42,17 @@ class Banque:
             compte.afficher_historique()
         else:
             print("Compte introuvable.")
+    
+    def virement(self, numero_source, numero_cible, montant):
+        compte_source = self.get_compte(numero_source)
+        compte_cible = self.get_compte(numero_cible)
+        if compte_source and compte_cible:
+            if compte_source.solde >= montant:
+                compte_source.retirer(montant)
+                compte_cible.deposer(montant)
+                print(f"✅ Virement de {montant}€ de {numero_source} vers {numero_cible} effectué.")
+            else:
+                print("⚠ Solde insuffisant pour le virement.")
+        else:
+            print("⚠ Un ou les deux comptes introuvables.")
+            

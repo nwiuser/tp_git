@@ -12,8 +12,10 @@ class Main:
             print("3. Retrait")
             print("4. Consulter le solde")
             print("5. Afficher l’historique des transactions")
-            print("6. Quitter")
-            print("ajouter pour avoir des conflits")
+
+            print("6. Effectuer un virement")
+            print("7. Quitter")
+            
 
             choix = input("Votre choix : ")
 
@@ -39,8 +41,13 @@ class Main:
             elif choix == "5":
                 numero = input("Numéro du compte : ")
                 banque.afficher_historique(numero)
-
-            elif choix == "6":
+            elif choix == "6":  
+                source = input("Numéro du compte source : ")
+                cible = input("Numéro du compte cible : ")
+                montant = float(input("Montant à virer : "))
+                banque.virement(source, cible, montant)
+            
+            elif choix == "7":
                 print("Merci d’avoir utilisé MaBanque. À bientôt !")
                 break
 

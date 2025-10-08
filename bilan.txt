@@ -1,0 +1,80 @@
+1) Comparaison visuelle (ASCII)
+
+Supposons : base A → B. Ensuite tu crées feature et fais des commits C et D ; main a fait E.
+
+État initial :
+
+A --- B --- E        (main)
+      \
+       C --- D       (feature)
+
+git merge feature (sur main)
+
+Tu te places sur main, tu merges feature → Git crée un merge commit M (s’il y a divergence) :
+
+A --- B --- E ------- M   (main)
+      \           /
+       C --- D ---        (feature)
+
+
+Le commit M a 2 parents : E et D. L’historique montre clairement la branche et la fusion.
+
+Fast-forward (cas simple)
+
+Si main n’a pas évolué (pas de E), merge fait un fast-forward :
+
+A --- B --- C --- D   (main)
+                     (feature)
+
+
+Pas de merge commit, main avance directement vers D.
+
+git rebase main (sur feature)
+
+Tu te places sur feature et tu replays C & D au-dessus de E :
+
+A --- B --- E --- C' --- D'   (feature réécrite)
+                \
+                 (main)
+
+
+Puis si tu merges feature dans main après le rebase, souvent ce sera un fast-forward et l’historique restera linéaire :
+
+A --- B --- E --- C' --- D'   (main)
+
+2) Commandes types & scénarios
+Merge (garder l’historique)
+git checkout main
+git merge feature
+# si conflit -> corriger fichiers, git add <fichiers>, git commit
+
+Rebase (linéariser)
+git checkout feature
+git rebase main
+# si conflit -> corriger, git add <fichiers>, git rebase --continue
+# pour annuler pendant rebase:
+git rebase --abort
+
+Mettre à jour feature depuis remote/main (recommandé)
+git fetch origin
+git checkout feature
+git rebase origin/main
+# puis si tu dois pousser ta branche feature partagée:
+git push --force-with-lease origin feature
+
+
+--force-with-lease est plus sûr que --force : il échoue si quelqu’un d’autre a poussé entre-temps.
+
+Variante : git pull --rebase
+
+Garde ton historique local propre quand tu pulls :
+
+git pull --rebase origin main
+
+3) Conflits et résolution (différences pratiques)
+
+Merge : en cas de conflit, Git interrompt le merge ; tu résous, git add puis git commit (ou git merge --abort pour annuler).
+
+Rebase : en conflit sur un commit "rejoué", tu dois corriger, git add, puis git rebase --continue. Pour annuler : git rebase --abort.
+
+Le flux de résolution est très similaire, mais les commandes diffèrent (merge --abort vs rebase --abort, rebase --continue).

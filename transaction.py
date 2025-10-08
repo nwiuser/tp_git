@@ -10,3 +10,5 @@ class Transaction:
 
     def __str__(self):
         return f"[{self.date}] {self.type.capitalize()} de {self.montant} € sur le compte {self.compte_associe.numero}"
+
+

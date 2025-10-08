@@ -1,11 +1,13 @@
 from transaction import Transaction
 
 class Compte:
-    def __init__(self, numero, proprietaire, solde=0):
+    def __init__(self, numero, proprietaire, solde=0,taux_interet=0.03):
         self.numero = numero
         self.proprietaire = proprietaire
         self.solde = solde
         self.transactions = []  # Liste des transactions
+        self.taux_interet = taux_interet
+        self.taux_interet = taux_interet
 
     def deposer(self, montant):
         self.solde += montant
@@ -45,3 +47,20 @@ class Compte:
         else:
             for t in self.transactions:
                 print(t)
+
+    def calculer_interets(self, duree_en_jours):
+        """
+        Calcule les intérêts simples pour une période donnée (en jours).
+        """
+        interets = self.solde * self.taux_interet * (duree_en_jours / 365)
+        print(f"Intérêts pour {duree_en_jours} jours : {interets:.2f} €")
+        return interets       
+
+    def capitaliser_interets(self, duree_en_jours):
+        interets = self.calculer_interets(duree_en_jours)
+        self.solde += interets
+        # On peut aussi créer une transaction spéciale pour l'intérêt
+        transaction = Transaction(len(self.transactions) + 1, interets, "intérêt", self)
+        self.transactions.append(transaction)
+        print(f"✅ Intérêts de {interets:.2f} € ajoutés au compte {self.numero}. Nouveau solde : {self.solde:.2f} €")
+     

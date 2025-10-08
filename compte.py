@@ -13,14 +13,32 @@ class Compte:
         self.transactions.append(transaction)
         print(f"Dépôt de {montant} € effectué sur le compte {self.numero}")
 
+
+# modifié par zakaria sur branch devB
     def retirer(self, montant):
-        if montant <= self.solde:
-            self.solde -= montant
-            transaction = Transaction(len(self.transactions) + 1, montant, "retrait", self)
-            self.transactions.append(transaction)
-            print(f"Retrait de {montant} € effectué sur le compte {self.numero}")
-        else:
-            print("Solde insuffisant !")
+    # Vérification de la validité du montant
+        if montant <= 0:
+            print("❌ Le montant doit être supérieur à 0.")
+            return False
+
+        # Vérification du solde disponible
+        if montant > self.solde:
+            print("❌ Solde insuffisant !")
+            return False
+
+        # Exécution du retrait
+        self.solde -= montant
+        transaction = Transaction(
+            len(self.transactions) + 1,
+            montant,
+            "retrait",
+            self
+        )
+        self.transactions.append(transaction)
+
+        print(f"✅ Retrait de {montant:.2f} € effectué sur le compte {self.numero}. Nouveau solde : {self.solde:.2f} €.")
+        return True
+
 
     def afficher_solde(self):
         print(f"Solde du compte {self.numero}: {self.solde} €")
